@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang='en us'>
+
+<!-- Header Section -->
+<head>
+  <meta charset='UTF-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giphy All Day</title>
+  <link rel="stylesheet" type="text/css" href="assets/css/reset.css"> 
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous"><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel='stylesheet' type='text/css' href='assets/css/style.css'>
+  <script type='text/javascript' src='assets/javascript/app.js'>
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/4.5.0/firebase.js"></script>
+
+</head>
+
+<body>
+  <div id='game'>
+    
+   <h1>Ouch! You've clicked me <span id="click-value"></span> times!</h1>
+    <div class="form-group">
+      <label class="control-label">Input addons</label>
+      <div class="input-group">
+      <span class="input-group-addon">$</span>
+      <input type="text" class="form-control" id='user-name-input'>
+      <span class="input-group-btn">
+      <button class="btn btn-default" type="button" id='click-button'>Button</button>
+    </span>
+  </div>
+  </div>
+  <div id='player-one'>
+  </div>
+  <div id='player-two'>
+  </div>
+</body>
+</html>
