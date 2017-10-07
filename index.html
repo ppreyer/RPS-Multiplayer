@@ -20,21 +20,29 @@
 
 <body>
   <div id='game'>
-    
-   <h1>Ouch! You've clicked me <span id="click-value"></span> times!</h1>
-    <div class="form-group">
-      <label class="control-label">Input addons</label>
-      <div class="input-group">
-      <span class="input-group-addon">$</span>
-      <input type="text" class="form-control" id='user-name-input'>
+    <div class='headline'>
+      <h1>Rock Paper Scissors</h1>
+    </div>
+     <div class="input-group">
+      <input type="text" class="form-control" id='log-in' placeholder="Search for...">
       <span class="input-group-btn">
-      <button class="btn btn-default" type="button" id='click-button'>Button</button>
-    </span>
-  </div>
-  </div>
-  <div id='player-one'>
-  </div>
-  <div id='player-two'>
+        <button class="btn btn-default" id='submit' type="button">Go!</button>
+      </span>
+    </div><!-- /input-group -->
+    <div id='text'>
+      <h4></h4>
+      <h4></h4>
+    </div>
+    <div id='player-log-in'>
+      <div id='playerOne'>
+      </div>
+      <div id='result'>
+      </div>
+      <div id='playerTwo'>
+      </div>
+      <div id='search'>
+      </div>
+    </div>
   </div>
 </body>
 </html>
