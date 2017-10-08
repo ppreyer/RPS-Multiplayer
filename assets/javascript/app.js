@@ -56,9 +56,9 @@ $('#submit').on('click', function() {
 function renderRockPaperScissors() {
   var html = '';
   html += '<ul class="gameChoices">';
-  html += '<li>Rock</li>';
-  html += '<li>Paper</li>';
-  html += '<li>Scissors</li>';
+  html += '<li class="choice" value="rock">Rock</li>';
+  html += '<li class="choice" value="paper">Paper</li>';
+  html += '<li class="choice" value="scissors">Scissors</li>';
   html += '</ul>';
   $('#playerOne').html(html);
   // $('.gameChoices').css('list-style-type', 'none');
@@ -75,7 +75,21 @@ function renderPlayerOneUserRecord() {
   $('#playerOne').append(html);
 }
 
+$(document).on('click', '.choice', function(){
+  console.log('CLICKED');
+  console.log($(this).attr('value'));
+  if($(this).attr('value') === 'rock') {
+    $('#result').append('<p>Rock</p>');
+  } else if($(this).attr('value') === 'paper') {
+      $('#result').append('<p>Paper</p>');
+    } else {
+      $('#result').append('<p>Scissors</p>');
+      }
+})
+
+
 }) 
 
-// Display win and loss record for player one
 
+
+// Add function to check what player one clicked
