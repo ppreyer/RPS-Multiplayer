@@ -38,6 +38,8 @@ $('#submit').on('click', function() {
     console.log("THIS SHOULD BE 2", searchCounter);
     playerTwo.name = $('#log-in').val().trim();
     database.ref().push(playerTwo);
+    $('#playerOne p').empty();
+    renderRockPaperScissors();
   } else {
     console.log("THIS SHOULD BE > 2");
     alert("Grab yourself a beer and please wait until the current game is over.")
@@ -45,8 +47,19 @@ $('#submit').on('click', function() {
   } 
 })
 
+function renderRockPaperScissors() {
+  var html = '';
+  html += '<ul class="gameChoices">';
+  html += '<li>Rock</li>';
+  html += '<li>Paper</li>';
+  html += '<li>Scissors</li>';
+  html += '</ul>';
+  $('#playerOne').html(html);
+  html.css('list-style-type', 'none');
+}
+
 }) 
 
-
-// Take search input and assign object to player one. 
-// On second search input value assign object to player two
+// Add choices to player one div
+// Add 1 to turn
+// Highlight player one div
