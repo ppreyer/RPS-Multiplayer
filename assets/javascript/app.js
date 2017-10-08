@@ -10,21 +10,23 @@ $(document).ready(function() {
   };
   firebase.initializeApp(config);
 var database = firebase.database();
-var playerOne = {
+
+var gameObject = {
+playerOne : {
           name : '',
           losses : 0,
           wins : 0,
           ties : 0
-}
-
-var playerTwo = {
+},
+playerTwo : {
           name : '',
           wins : 0,
           losses : 0,
           ties : 0
+},
+turn : 0
 }
 
-var turn = 0;
 var searchCounter = 0;
 
 $('#submit').on('click', function() {
@@ -32,14 +34,17 @@ $('#submit').on('click', function() {
   searchCounter++;
   if(searchCounter === 1) {
     console.log("THIS SHOULD BE 1", searchCounter)
-    playerOne.name = $('#log-in').val().trim();
-    database.ref().push(playerOne);
+    gameObject.playerOne.name = $('#log-in').val().trim();
+    database.ref().push(gameObject.playerOne);
+    database.ref().push(gameObject.turn);
   } else if(searchCounter === 2) {
     console.log("THIS SHOULD BE 2", searchCounter);
-    playerTwo.name = $('#log-in').val().trim();
-    database.ref().push(playerTwo);
+    gameObject.playerTwo.name = $('#log-in').val().trim();
+    database.ref().push(gameObject.playerTwo);
     $('#playerOne p').empty();
     renderRockPaperScissors();
+    changeTurn();
+    console.log('THIS SHOULD BE TURN 1', gameObject.turn)
   } else {
     console.log("THIS SHOULD BE > 2");
     alert("Grab yourself a beer and please wait until the current game is over.")
@@ -55,11 +60,13 @@ function renderRockPaperScissors() {
   html += '<li>Scissors</li>';
   html += '</ul>';
   $('#playerOne').html(html);
-  html.css('list-style-type', 'none');
+  // $('.gameChoices').css('list-style-type', 'none');
+}
+
+function changeTurn() {
+  gameObject.turn++;
 }
 
 }) 
 
-// Add choices to player one div
-// Add 1 to turn
-// Highlight player one div
+
