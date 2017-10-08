@@ -55,11 +55,13 @@ $('#submit').on('click', function() {
 
 function renderRockPaperScissors() {
   var html = '';
+  html += '<div class="section">'
   html += '<ul class="gameChoices">';
   html += '<li class="choice" value="rock">Rock</li>';
   html += '<li class="choice" value="paper">Paper</li>';
   html += '<li class="choice" value="scissors">Scissors</li>';
   html += '</ul>';
+  html += '</div>'
   $('#playerOne').html(html);
   // $('.gameChoices').css('list-style-type', 'none');
 }
@@ -78,12 +80,16 @@ function renderPlayerOneUserRecord() {
 $(document).on('click', '.choice', function(){
   console.log('CLICKED');
   console.log($(this).attr('value'));
+  changeTurn();
   if($(this).attr('value') === 'rock') {
-    $('#result').append('<p>Rock</p>');
+    $('.section').empty();
+    $('.section').append('<p>Rock</p>');
   } else if($(this).attr('value') === 'paper') {
-      $('#result').append('<p>Paper</p>');
+     $('.section').empty();
+      $('.section').append('<p>Paper</p>');
     } else {
-      $('#result').append('<p>Scissors</p>');
+      $('.section').empty();
+      $('.section').append('<p>Paper</p>');
       }
 })
 
@@ -91,5 +97,3 @@ $(document).on('click', '.choice', function(){
 }) 
 
 
-
-// Add function to check what player one clicked
