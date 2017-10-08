@@ -43,6 +43,7 @@ $('#submit').on('click', function() {
     database.ref().push(gameObject.playerTwo);
     $('#playerOne p').empty();
     renderRockPaperScissors();
+    renderPlayerOneUserRecord();
     changeTurn();
     console.log('THIS SHOULD BE TURN 1', gameObject.turn)
   } else {
@@ -67,6 +68,14 @@ function changeTurn() {
   gameObject.turn++;
 }
 
+function renderPlayerOneUserRecord() {
+  var html = '';
+  html += `<p>Wins: ${gameObject.playerOne.wins}</p>`
+  html += `<p>Losses: ${gameObject.playerOne.losses}</p>`
+  $('#playerOne').append(html);
+}
+
 }) 
 
+// Display win and loss record for player one
 
