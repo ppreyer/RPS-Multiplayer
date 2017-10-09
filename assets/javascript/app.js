@@ -16,13 +16,15 @@ playerOne : {
           name : '',
           losses : 0,
           wins : 0,
-          ties : 0
+          ties : 0,
+          gameTurn : false
 },
 playerTwo : {
           name : '',
           wins : 0,
           losses : 0,
-          ties : 0
+          ties : 0,
+          gameTurn : false
 },
 turn : 0
 }
@@ -37,11 +39,13 @@ $('#submit').on('click', function() {
     gameObject.playerOne.name = $('#log-in').val().trim();
     database.ref().push(gameObject.playerOne);
     database.ref().push(gameObject.turn);
+    $('#playerOne p').empty();
+    renderPlayerOneName();
   } else if(searchCounter === 2) {
     console.log("THIS SHOULD BE 2", searchCounter);
     gameObject.playerTwo.name = $('#log-in').val().trim();
     database.ref().push(gameObject.playerTwo);
-    $('#playerOne p').empty();
+    console.log(gameObject.playerOne.name);
     renderRockPaperScissors();
     renderPlayerOneUserRecord();
     changeTurn();
@@ -53,6 +57,12 @@ $('#submit').on('click', function() {
   } 
 })
 
+function renderPlayerOneName() {
+  var html = '';
+  html += `<p>${gameObject.playerOne.name}</p>`;
+  $('#playerOne').prepend(html);
+}
+
 function renderRockPaperScissors() {
   var html = '';
   html += '<div class="section">'
@@ -62,7 +72,7 @@ function renderRockPaperScissors() {
   html += '<li class="choice" value="scissors">Scissors</li>';
   html += '</ul>';
   html += '</div>'
-  $('#playerOne').html(html);
+  $('#playerOne').append(html);
   // $('.gameChoices').css('list-style-type', 'none');
 }
 
@@ -92,6 +102,16 @@ $(document).on('click', '.choice', function(){
       $('.section').append('<p>Paper</p>');
       }
 })
+
+function decidePlayerTurn() {
+  if(gameObject.turn > 0 && gameObject.turn % 2 !== 0) {
+    gameObject.playerOne.gameTurn = true;
+    gameObject.playerTwo.gameTurn = false;
+  } else {
+    gameObject.playerTwo.gameTurn = true;
+    gameObject.playerOne.gameTurn = false;
+    } 
+}
 
 
 }) 
