@@ -19,6 +19,7 @@ var gameObject = {
                 one :
                   {
                     name : '',
+                    selection : '',
                     wins : 0,
                     losses : 0,
                     ties : 0
@@ -27,12 +28,13 @@ var gameObject = {
                 two :
                   {
                     name : '',
+                    selection : '',
                     wins : 0,
                     losses : 0,
                     ties : 0
                   },
               },
-        userTurn : 0
+        userTurn : 1
     }
 
 var userCounter = 0;
@@ -68,7 +70,7 @@ $('#submit').on('click', function(){
       var userTwoName = user.val().name;
       $('#playerTwo').prepend(userTwoName);
       })
-      renderRockPaperScissors();
+      renderRockPaperScissorsUserOne();
       playerOneRef.on('value', function(user){
       var userOneWins = user.val().wins;
       var userOneLosses = user.val().losses;
@@ -76,20 +78,112 @@ $('#submit').on('click', function(){
       })
     } else {
       alert('Grab a beer and wait your turn!')
-    }
+      }
 })
 
-function renderRockPaperScissors() {
+function renderRockPaperScissorsUserOne() {
   var html = '';
   html += '<div class="section">'
   html += '<ul class="gameChoices">';
-  html += '<li class="choice" value="rock">Rock</li>';
-  html += '<li class="choice" value="paper">Paper</li>';
-  html += '<li class="choice" value="scissors">Scissors</li>';
+  html += '<li class="choiceOne" value="rock">Rock</li>';
+  html += '<li class="choiceOne" value="paper">Paper</li>';
+  html += '<li class="choiceOne" value="scissors">Scissors</li>';
   html += '</ul>';
   html += '</div>'
   $('#playerOne').append(html);
-  // $('.gameChoices').css('list-style-type', 'none');
 }
+
+function renderRockPaperScissorsUserTwo() {
+  var html = '';
+  html += '<div class="section">'
+  html += '<ul class="gameChoices">';
+  html += '<li class="choiceTwo" value="rock">Rock</li>';
+  html += '<li class="choiceTwo" value="paper">Paper</li>';
+  html += '<li class="choiceTwo" value="scissors">Scissors</li>';
+  html += '</ul>';
+  html += '</div>'
+  $('#playerTwo').append(html);
+}
+// function renderRockPaperScissorsUserTwo() {
+//   var html = '';
+//   html += '<div class="section">'
+//   html += '<ul class="gameChoices">';
+//   html += '<li class="choice" value="rock">Rock</li>';
+//   html += '<li class="choice" value="paper">Paper</li>';
+//   html += '<li class="choice" value="scissors">Scissors</li>';
+//   html += '</ul>';
+//   html += '</div>'
+//   $('#playerOne').append(html);
+// }
+
+$(document).on('click', '.choiceOne', function(){
+  console.log('CLICKED');
+  usersRef.update({
+    'userTurn' : 2
+  })
+  if($(this).attr('value') === 'rock') {
+    $('.section').empty();
+    $('.section').append('<p>Rock</p>');
+    var rock = $(this).attr('value');
+    playerOneRef.update({
+      'selection' : rock
+    });
+    userTwoSelection();
+  } else if($(this).attr('value') === 'paper') {
+     $('.section').empty();
+      $('.section').append('<p>Paper</p>');
+      var paper = $(this).attr('value');
+      playerOneRef.update({
+      'selection' : paper
+      });
+    } else {
+      $('.section').empty();
+      $('.section').append('<p>Scissors</p>');
+      var scissors = $(this).attr('value');
+      playerOneRef.update({
+      'selection' : scissors
+      });
+      }
+})
+
+$(document).on('click', '.choiceTwo', function(){
+  console.log('CLICKED');
+  usersRef.update({
+    'userTurn' : 3
+  })
+  if($(this).attr('value') === 'rock') {
+    $('.section').empty();
+    $('.section').append('<p>Rock</p>');
+    var rock = $(this).attr('value');
+    playerOneRef.update({
+      'selection' : rock
+    });
+    userTwoSelection();
+  } else if($(this).attr('value') === 'paper') {
+     $('.section').empty();
+      $('.section').append('<p>Paper</p>');
+      var paper = $(this).attr('value');
+      playerOneRef.update({
+      'selection' : paper
+      });
+    } else {
+      $('.section').empty();
+      $('.section').append('<p>Scissors</p>');
+      var scissors = $(this).attr('value');
+      playerOneRef.update({
+      'selection' : scissors
+      });
+      }
+})
+
+function userTwoSelection() {
+  usersRef.on('value', function(user){
+    if(user.val().userTurn === 2) {
+      console.log(user.val().userTurn);
+      renderRockPaperScissorsUserTwo();
+    }
+  })
+}
+
 
 });
