@@ -83,7 +83,7 @@ $('#submit').on('click', function(){
 
 function renderRockPaperScissorsUserOne() {
   var html = '';
-  html += '<div class="section">'
+  html += '<div class="sectionOne">'
   html += '<ul class="gameChoices">';
   html += '<li class="choiceOne" value="rock">Rock</li>';
   html += '<li class="choiceOne" value="paper">Paper</li>';
@@ -95,7 +95,7 @@ function renderRockPaperScissorsUserOne() {
 
 function renderRockPaperScissorsUserTwo() {
   var html = '';
-  html += '<div class="section">'
+  html += '<div class="sectionTwo">'
   html += '<ul class="gameChoices">';
   html += '<li class="choiceTwo" value="rock">Rock</li>';
   html += '<li class="choiceTwo" value="paper">Paper</li>';
@@ -122,27 +122,29 @@ $(document).on('click', '.choiceOne', function(){
     'userTurn' : 2
   })
   if($(this).attr('value') === 'rock') {
-    $('.section').empty();
-    $('.section').append('<p>Rock</p>');
+    $('.sectionOne').empty();
+    $('.sectionOne').append('<p>Rock</p>');
     var rock = $(this).attr('value');
     playerOneRef.update({
       'selection' : rock
     });
     userTwoSelection();
   } else if($(this).attr('value') === 'paper') {
-     $('.section').empty();
-      $('.section').append('<p>Paper</p>');
+     $('.sectionOne').empty();
+      $('.sectionOne').append('<p>Paper</p>');
       var paper = $(this).attr('value');
       playerOneRef.update({
       'selection' : paper
       });
+      userTwoSelection();
     } else {
-      $('.section').empty();
-      $('.section').append('<p>Scissors</p>');
+      $('.sectionOne').empty();
+      $('.sectionOne').append('<p>Scissors</p>');
       var scissors = $(this).attr('value');
       playerOneRef.update({
       'selection' : scissors
       });
+      userTwoSelection();
       }
 })
 
@@ -152,27 +154,29 @@ $(document).on('click', '.choiceTwo', function(){
     'userTurn' : 3
   })
   if($(this).attr('value') === 'rock') {
-    $('.section').empty();
-    $('.section').append('<p>Rock</p>');
+    $('.sectionTwo').empty();
+    $('.sectionTwo').append('<p>Rock</p>');
     var rock = $(this).attr('value');
-    playerOneRef.update({
+    playerTwoRef.update({
       'selection' : rock
     });
-    userTwoSelection();
+    compareUserSelections();
   } else if($(this).attr('value') === 'paper') {
-     $('.section').empty();
-      $('.section').append('<p>Paper</p>');
+     $('.sectionTwo').empty();
+      $('.sectionTwo').append('<p>Paper</p>');
       var paper = $(this).attr('value');
-      playerOneRef.update({
+      playerTwoRef.update({
       'selection' : paper
       });
+    compareUserSelections();  
     } else {
-      $('.section').empty();
-      $('.section').append('<p>Scissors</p>');
+      $('.sectionTwo').empty();
+      $('.sectionTwo').append('<p>Scissors</p>');
       var scissors = $(this).attr('value');
-      playerOneRef.update({
+      playerTwoRef.update({
       'selection' : scissors
       });
+      compareUserSelections();
       }
 })
 
@@ -181,8 +185,77 @@ function userTwoSelection() {
     if(user.val().userTurn === 2) {
       console.log(user.val().userTurn);
       renderRockPaperScissorsUserTwo();
-    }
-  })
+      // playerTwoRef.on('value', function(user){
+      // var userTwoWins = user.val().wins;
+      // var userTwoLosses = user.val().losses;
+      // $('#playerTwo').append('Wins:' + ' ' + userTwoWins + ' ' + 'Losses:' + ' ' + userTwoLosses);
+      }
+    })
+  }
+
+function compareUserSelections() {
+  var userOneChoice = $('.sectionOne p').text().toLowerCase();
+  var userTwoChoice = $('.sectionTwo p').text().toLowerCase();
+  console.log(userOneChoice);
+  console.log(userTwoChoice);
+  if(userOneChoice === userTwoChoice) {
+    gameObject.players.one.ties++;
+    gameObject.players.two.ties++;
+    playerOneRef.update({
+      'ties' : gameObject.players.one.ties
+    })
+    playerTwoRef.update({
+      'ties' : gameObject.players.two.ties
+    })
+  } else if(userOneChoice === 'rock' && userTwoChoice === 'aper') {
+      gameObject.players.one.losses++;
+      gameObject.players.two.wins++;
+      playerOneRef.update({
+      'losses' : gameObject.players.one.losses
+    })
+    playerTwoRef.update({
+      'wins' : gameObject.players.two.wins
+    })
+    } else if(userOneChoice === 'rock' && userTwoChoice === 'scissors') {
+      gameObject.players.one.wins++;
+      gameObject.players.two.losses++;
+      playerOneRef.update({
+      'wins' : gameObject.players.one.wins
+    })
+    playerTwoRef.update({
+      'losses' : gameObject.players.two.losses
+    })
+    } else if(userOneChoice === 'paper' && userTwoChoice === 'rock') {
+      gameObject.players.one.wins++;
+      gameObject.players.two.losses++;
+      playerOneRef.update({
+      'wins' : gameObject.players.one.wins
+    })
+    playerTwoRef.update({
+      'losses' : gameObject.players.two.losses
+    })
+    } else if(userOneChoice === 'paper' && userTwoChoice === 'scissors') {
+        gameObject.players.one.losses++;
+        gameObject.players.two.wins++;
+        playerOneRef.update({
+        'losses' : gameObject.players.one.losses
+        })
+        playerTwoRef.update({
+          'wins' : gameObject.players.two.wins
+        })
+      } else if(userOneChoice === 'scissors' && userTwoChoice === 'rock') {
+          gameObject.players.one.losses++;
+          gameObject.players.two.wins++;
+          playerOneRef.update({
+          'losses' : gameObject.players.one.losses
+          })
+          playerTwoRef.update({
+          'wins' : gameObject.players.two.wins
+          })
+        } else if(userOneChoice === 'scissors' && userTwoChoice === 'paper') {
+            gameObject.players.one.wins++;
+            gameObject.players.two.losses++;
+          }
 }
 
 
