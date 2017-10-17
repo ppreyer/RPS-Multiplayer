@@ -47,6 +47,21 @@ var usersRef = database.ref().child('users');
 var playerOneRef = usersRef.child('players').child('one');
 var playerTwoRef = usersRef.child('players').child('two');
 
+function updatePlayerOneSelection() {
+  playerOneRef.update({
+    'selection' : 'rock'
+  })
+}
+
+function updatePlayerTwoSelection() {
+  playerTwoRef.update({
+    'selection' : 'rock'
+  })
+}
+
+updatePlayerOneSelection();
+updatePlayerTwoSelection();
+
 // Store user log-in info
 $('#submit').on('click', function(){
   // Prevent from submitting on button click
@@ -59,6 +74,7 @@ $('#submit').on('click', function(){
   if(userCounter === 1) {
     // Set firebase database to object
     usersRef.set(gameObject);
+    console.log(gameObject);
     // Delete playerOne div in html
     $('#playerOne p').empty();
     // Declare playerTwo variable
@@ -96,7 +112,7 @@ $('#submit').on('click', function(){
         var userOneWins = user.val().wins;
         var userOneLosses = user.val().losses;
         // Append data to player one div in html
-        $('#playerOne').append('Wins:' + ' ' + userOneWins + ' ' + 'Losses:' + ' ' + userOneLosses);
+        $('#playerOne').append('<p> Wins:' + ' ' + userOneWins + ' ' + 'Losses:' + ' ' + userOneLosses + '</p>');
       })
       // Look at player two data in firebase
       playerTwoRef.on('value', function(user){
@@ -105,7 +121,7 @@ $('#submit').on('click', function(){
         var userTwoLosses = user.val().losses;
         // Append data to html
         $('#playerTwo').append('<div id="rps"></div>')
-        $('#playerTwo').append('Wins:' + ' ' + userTwoWins + ' ' + 'Losses:' + ' ' + userTwoLosses);      
+        $('#playerTwo').append('<p> Wins:' + ' ' + userTwoWins + ' ' + 'Losses:' + ' ' + userTwoLosses + '</p>');      
       })
       // else...
     } else {
@@ -150,6 +166,7 @@ $(document).on('click', '.choiceOne', function(){
   usersRef.update({
     'userTurn' : 2
   })
+  console.log(gameObject.userTurn);
   // Conditional - if the choice === 'rock'
   if($(this).attr('value') === 'rock') {
     // Empty list and append rock
@@ -157,11 +174,12 @@ $(document).on('click', '.choiceOne', function(){
     $('.sectionOne').append('<p>Rock</p>');
     // Update firebase with user's selection
     var rock = $(this).attr('value');
-    playerOneRef.update({
-      'selection' : rock
-    });
+    // playerOneRef.update({
+    //   'selection' : rock
+    // });
     // Invoke userTwoSelection - defined below...
     userTwoSelection();
+    console.log(gameObject);
     // Repeat above steps with paper
   } else if($(this).attr('value') === 'paper') {
      $('.sectionOne').empty();
@@ -193,10 +211,10 @@ $(document).on('click', '.choiceTwo', function(){
     $('.sectionTwo').empty();
     $('.sectionTwo').append('<p>Rock</p>');
     var rock = $(this).attr('value');
-    playerTwoRef.update({
-      'selection' : rock
-    });
-    compareUserSelections();
+    // playerTwoRef.update({
+    //   'selection' : rock
+    // });
+    // compareUserSelections();
   } else if($(this).attr('value') === 'paper') {
      $('.sectionTwo').empty();
       $('.sectionTwo').append('<p>Paper</p>');
