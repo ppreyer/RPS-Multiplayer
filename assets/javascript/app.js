@@ -47,20 +47,20 @@ var usersRef = database.ref().child('users');
 var playerOneRef = usersRef.child('players').child('one');
 var playerTwoRef = usersRef.child('players').child('two');
 
-function updatePlayerOneSelection() {
-  playerOneRef.update({
-    'selection' : 'rock'
-  })
-}
+// function updatePlayerOneSelection() {
+//   playerOneRef.update({
+//     'selection' : 'rock'
+//   })
+// }
 
-function updatePlayerTwoSelection() {
-  playerTwoRef.update({
-    'selection' : 'rock'
-  })
-}
+// function updatePlayerTwoSelection() {
+//   playerTwoRef.update({
+//     'selection' : 'rock'
+//   })
+// }
 
-updatePlayerOneSelection();
-updatePlayerTwoSelection();
+// updatePlayerOneSelection();
+// updatePlayerTwoSelection();
 
 // Store user log-in info
 $('#submit').on('click', function(){
@@ -74,11 +74,11 @@ $('#submit').on('click', function(){
   if(userCounter === 1) {
     // Set firebase database to object
     usersRef.set(gameObject);
-    console.log(gameObject);
+    console.log(usersRef);
     // Delete playerOne div in html
-    $('#playerOne p').empty();
-    // Declare playerTwo variable
-    var playerTwo = gameObject.players.two;
+    // $('#playerOne p').empty();
+    // // Declare playerTwo variable
+    // var playerTwo = gameObject.players.two;
     // Look at first player values in firebase...
     playerOneRef.on('value', function(user){
     // Declare first player name with username from firebase
@@ -174,9 +174,10 @@ $(document).on('click', '.choiceOne', function(){
     $('.sectionOne').append('<p>Rock</p>');
     // Update firebase with user's selection
     var rock = $(this).attr('value');
-    // playerOneRef.update({
-    //   'selection' : rock
-    // });
+    // debugger;
+    playerOneRef.update({
+      'selection' : rock
+    });
     // Invoke userTwoSelection - defined below...
     userTwoSelection();
     console.log(gameObject);
@@ -211,9 +212,9 @@ $(document).on('click', '.choiceTwo', function(){
     $('.sectionTwo').empty();
     $('.sectionTwo').append('<p>Rock</p>');
     var rock = $(this).attr('value');
-    // playerTwoRef.update({
-    //   'selection' : rock
-    // });
+    playerTwoRef.update({
+      'selection' : rock
+    });
     // compareUserSelections();
   } else if($(this).attr('value') === 'paper') {
      $('.sectionTwo').empty();
