@@ -55,10 +55,9 @@ $(document).ready(function() {
         // Prevent from submitting on button click
         event.preventDefault();
         // Assign log-in value to object property
-        gameObject.players.one.name = $('#log-in').val().trim();
-        console.log(gameObject);
         userCounter++;
         if (userCounter === 1) {
+            gameObject.players.one.name = $('#log-in').val().trim();
             $('#playerOne p').empty();
             playerOneRef.update({
                 'name': gameObject.players.one.name
@@ -77,9 +76,9 @@ $(document).ready(function() {
             $('#playerTwo p').empty();
             $('#playerTwo').prepend(`<p>${gameObject.players.two.name}</p>`);
             renderRockPaperScissorsUserOne();
-            $('#playerOne').append('<p> Wins:' + ' ' + gameObject.players.one.wins + ' ' + 'Losses:' + ' ' + gameObject.players.one.losses + '</p>');
+            $('#playerOne').append('<p id="playerOneRecord"> Wins:' + ' ' + gameObject.players.one.wins + ' ' + 'Losses:' + ' ' + gameObject.players.one.losses + '</p>');
             $('#playerTwo').append('<div id="rps"></div>')
-            $('#playerTwo').append('<p> Wins:' + ' ' + gameObject.players.two.wins + ' ' + 'Losses:' + ' ' + gameObject.players.two.losses + '</p>');
+            $('#playerTwo').append('<p id="playerTwoRecord"> Wins:' + ' ' + gameObject.players.two.wins + ' ' + 'Losses:' + ' ' + gameObject.players.two.losses + '</p>');
 
             } else {
             alert('Grab a beer and wait your turn!')
@@ -100,6 +99,21 @@ $(document).ready(function() {
         html += '</div>'
         // Append html to the page
         $('#playerOne').append(html);
+    }
+
+    function userOneReset() {
+        // Declare empty html variable
+        var html = '';
+        // Add list of RPS choices
+        // html += '<div class="sectionOne">'
+        html += '<ul class="gameChoices">';
+        html += '<li class="choiceOne" value="rock">Rock</li>';
+        html += '<li class="choiceOne" value="paper">Paper</li>';
+        html += '<li class="choiceOne" value="scissors">Scissors</li>';
+        html += '</ul>';
+        // html += '</div>'
+        // Append html to the page
+        $('.sectionOne').html(html);
     }
 
     // Function appends appropriate game choices for user two
@@ -124,7 +138,7 @@ $(document).ready(function() {
         // })
         gameObject.userTurn = 1;
         // Conditional - if the choice === 'rock'
-        setObjectToFirebase();
+        // setObjectToFirebase();
         console.log('After Set', gameObject);
         if ($(this).attr('value') === 'rock') {
             // Empty list and append rock
@@ -235,11 +249,25 @@ $(document).ready(function() {
         })
     }
 }
+
+    function renderWinLoseRecord(player) {
+        if(player === gameObject.players.one.name) {
+            $('#playerOneRecord').html('<p> Wins:' + ' ' + gameObject.players.one.wins + ' ' + 'Losses:' + ' ' + gameObject.players.one.losses + '</p>');
+            $('#playerTwoRecord').html('<p> Wins:' + ' ' + gameObject.players.two.wins + ' ' + 'Losses:' + ' ' + gameObject.players.two.losses + '</p>');
+        } else {
+            $('#playerTwoRecord').html('<p> Wins:' + ' ' + gameObject.players.two.wins + ' ' + 'Losses:' + ' ' + gameObject.players.two.losses + '</p>');
+            $('#playerOneRecord').html('<p> Wins:' + ' ' + gameObject.players.one.wins + ' ' + 'Losses:' + ' ' + gameObject.players.one.losses + '</p>');
+        }
+    }
     // Function compares choices made by both players
     function compareUserSelections() {
         // Declare variables to store selections made by both players
-        var userOneChoice = $('.sectionOne p').text().toLowerCase();
-        var userTwoChoice = $('.sectionTwo p').text().toLowerCase();
+        // var userOneChoice = $('.sectionOne p').text().toLowerCase();
+        // var userTwoChoice = $('.sectionTwo p').text().toLowerCase();
+        var userOneChoice = gameObject.players.one.selection.toLowerCase();
+        console.log('USERONE', userOneChoice);
+        var userTwoChoice = gameObject.players.two.selection.toLowerCase();
+        console.log('UserTwo', userTwoChoice);
         // Conditional - if both choices match up...
         if (userOneChoice === userTwoChoice) {
             // Add one to ties for both players
@@ -247,6 +275,9 @@ $(document).ready(function() {
             gameObject.players.two.ties++;
             var tie = 'tie';
             renderWinner(tie);
+            gameOverCounter();
+            console.log("GAME OBJECT", gameObject);
+            console.log("FIREBASE", database);
             // Update records in firebase
             playerOneRef.update({
                 'ties': gameObject.players.one.ties
@@ -254,60 +285,111 @@ $(document).ready(function() {
             playerTwoRef.update({
                 'ties': gameObject.players.two.ties
             })
+            resetUserSelection();
+            userOneChoice = gameObject.players.one.selection
+            userTwoChoice = gameObject.players.two.selection
+            console.log('UserOne :', userOneChoice);
+            console.log('UserTwo :', userTwoChoice);
             // Go through and compare RPS choices with each other and update wins/losses appropriately...
         } else if (userOneChoice === 'rock' && userTwoChoice === 'paper') {
             gameObject.players.one.losses++;
             gameObject.players.two.wins++;
             renderWinner(gameObject.players.two.name);
+            renderWinLoseRecord(gameObject.players.two.name);
+            gameOverCounter();
             playerOneRef.update({
                 'losses': gameObject.players.one.losses
             })
             playerTwoRef.update({
                 'wins': gameObject.players.two.wins
             })
+            resetUserSelection();
         } else if (userOneChoice === 'rock' && userTwoChoice === 'scissors') {
             gameObject.players.one.wins++;
             gameObject.players.two.losses++;
             console.log(gameObject);
             renderWinner(gameObject.players.one.name);
+            renderWinLoseRecord(gameObject.players.one.name);
+            gameOverCounter();
             playerOneRef.update({
                 'wins': gameObject.players.one.wins
             })
             playerTwoRef.update({
                 'losses': gameObject.players.two.losses
             })
+            resetUserSelection();
         } else if (userOneChoice === 'paper' && userTwoChoice === 'rock') {
             gameObject.players.one.wins++;
             gameObject.players.two.losses++;
+            renderWinner(gameObject.players.one.name);
+            renderWinLoseRecord(gameObject.players.one.name);
+            gameOverCounter();
             playerOneRef.update({
                 'wins': gameObject.players.one.wins
             })
             playerTwoRef.update({
                 'losses': gameObject.players.two.losses
             })
+            resetUserSelection();
         } else if (userOneChoice === 'paper' && userTwoChoice === 'scissors') {
             gameObject.players.one.losses++;
             gameObject.players.two.wins++;
+            renderWinner(gameObject.players.two.name);
+            renderWinLoseRecord(gameObject.players.two.name);
+            gameOverCounter();
             playerOneRef.update({
                 'losses': gameObject.players.one.losses
             })
             playerTwoRef.update({
                 'wins': gameObject.players.two.wins
             })
+            resetUserSelection();
         } else if (userOneChoice === 'scissors' && userTwoChoice === 'rock') {
             gameObject.players.one.losses++;
             gameObject.players.two.wins++;
+            renderWinner(gameObject.players.two.name);
+            renderWinLoseRecord(gameObject.players.two.name);
+            gameOverCounter();
             playerOneRef.update({
                 'losses': gameObject.players.one.losses
             })
             playerTwoRef.update({
                 'wins': gameObject.players.two.wins
             })
+            resetUserSelection();
         } else if (userOneChoice === 'scissors' && userTwoChoice === 'paper') {
             gameObject.players.one.wins++;
             gameObject.players.two.losses++;
+            renderWinner(gameObject.players.one.name);
+            renderWinLoseRecord(gameObject.players.one.name);
+            gameOverCounter();
+            resetUserSelection();
         }
     }
 
+    function gameOverCounter() {
+        setTimeout(resetGame, 1000);
+    }
+
+    function resetUserSelection() {
+        var emptyString = '';
+        gameObject.players.one.selection = 'empty';
+        gameObject.players.two.selection = 'empty';
+        
+        playerOneRef.update({
+                'selection': emptyString
+            });
+        playerTwoRef.update({
+                'selection': emptyString
+            });
+    }
+
+    function resetGame() {
+       $('#result').empty();
+       $('.sectionTwo').remove();
+       userOneReset();
+       resetUserSelection();
+    }
 
 });
+
